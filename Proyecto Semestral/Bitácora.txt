@@ -1,0 +1,56 @@
+17/09/2017
+
+1. Iniciar ambiente de desarrollo
+
+..* Organizar carpetas
+..* Clasificar material
+..* Iniciar registro de proyecto
+..* Instalar dependencias necesarias
+
+2. Desarrollar y sincronizar control de versiones (Opcional)
+
+..* Crear repositorio GIT
+..* Sincronizar
+..* Configurar .gitignore
+
+19/09/2017
+
+# Graficar
+#import matplotlib
+#%matplotlib inline
+#trainingSetMerge.plot.scatter(x='DATE_MOVIE', y='RANKING')
+
+REGISTRO 
+
+#trainingSet = pd.read_csv('./netflixData/training_set.csv')
+#trainingSet
+
+#combineData2 = pd.read_csv('./netflixData/combined_data_2.csv')
+#combineData2
+
+#combineData3 = pd.read_csv('./netflixData/combined_data_3.csv')
+#combineData3
+
+#combineData4 = pd.read_csv('./netflixData/combined_data_4.csv')
+#combineData4
+
+#frames = [combineData1, combineData2, combineData3, combineData4]
+#result = pd.concat(frames)
+
+#result
+
+#del combineData1
+#del combineData2
+#del combineData3
+#del combineData4
+
+#chunksize = 10 ** 6
+#for chunk in pd.read_json('./netflixData/combined_data_1.json', chunksize=chunksize):
+#    combineData1 = chuck
+#    process(chunk)
+
+#combineData1
+
+#tamanoFragmento = 10 ** 6
+#for fragmento in pd.read_csv('./netflixData/combined_data_1.csv', chunksize=tamanoFragmento):
+#    print(fragmento)
