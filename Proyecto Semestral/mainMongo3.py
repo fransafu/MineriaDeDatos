@@ -53,7 +53,7 @@ with open(namefile1, "rb") as myFileRead:
         contenido.append(dicAux)
 
 record_id = mydb.training_sets.insert(contenido)
-
+"""
 print ("Inicia namefile2")
 contenido = []
 with open(namefile2, "rb") as myFileRead:
@@ -104,7 +104,7 @@ with open(namefile4, "rb") as myFileRead:
         contenido.append(dicAux)
 
 record_id = mydb.training_sets.insert(contenido)
-
+"""
 print ("Finaliza programa")
 
 """
