@@ -20,6 +20,7 @@ def main():
         factor2 = input("Ingresar factor 2 (F2): ")
 
         VarianzaElemento = input("Ingresar la varianza del elemento (U): ")
+        
 
         contadorElementos += 1
 
