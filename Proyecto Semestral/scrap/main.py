@@ -133,3 +133,20 @@ if __name__ == '__main__':
 	main()
 
 # db.searchs.aggregate([ {"$group" : {_id:"$ID_MOVIE", count:{$sum:1}}} ])
+"""
+db.searchs.aggregate([
+	{
+		"$group" : {
+			_id:"$ID_MOVIE", 
+			count:{$sum:1}
+		}
+	},
+	{
+		"$match":{
+			count:{
+				"$gt": 2
+			}
+		}
+	}
+])
+"""
