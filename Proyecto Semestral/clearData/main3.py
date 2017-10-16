@@ -71,7 +71,7 @@ def main():
                     # datos3 = (lineaPelicula.rstrip()).split("=")
                     if (x[0] == datos3[5]):
     #                    pprint (datos3)
-                        strResult = "{},{},{},{},{},{},{},{},{}\n".format(datos3[0], datos3[3], datos3[4], datos3[5], datos3[6], datos3[7], datos3[8], datos3[9], datos3[10])
+                        strResult = "{}={}={}={}={}={}={}={}={}\n".format(datos3[0], datos3[3], datos3[4], datos3[5], datos3[6], datos3[7], datos3[8], datos3[9], datos3[10])
                         myFileWrite.write(strResult)
                 indexValido += 1
 
