@@ -11,139 +11,118 @@ enc = "latin-1"
 
 enc = "latin-1"
 
-genres = {
-    "genres": [
-        {
-            "id": 28,
-            "name": "Action"
-        },
-        {
-            "id": 12,
-            "name": "Adventure"
-        },
-        {
-            "id": 16,
-            "name": "Animation"
-        },
-        {
-            "id": 35,
-            "name": "Comedy"
-        },
-        {
-            "id": 80,
-            "name": "Crime"
-        },
-        {
-            "id": 99,
-            "name": "Documentary"
-        },
-        {
-            "id": 18,
-            "name": "Drama"
-        },
-        {
-            "id": 10751,
-            "name": "Family"
-        },
-        {
-            "id": 14,
-            "name": "Fantasy"
-        },
-        {
-            "id": 36,
-            "name": "History"
-        },
-        {
-            "id": 27,
-            "name": "Horror"
-        },
-        {
-            "id": 10402,
-            "name": "Music"
-        },
-        {
-            "id": 9648,
-            "name": "Mystery"
-        },
-        {
-            "id": 10749,
-            "name": "Romance"
-        },
-        {
-            "id": 878,
-            "name": "Science Fiction"
-        },
-        {
-            "id": 10770,
-            "name": "TV Movie"
-        },
-        {
-            "id": 53,
-            "name": "Thriller"
-        },
-        {
-            "id": 10752,
-            "name": "War"
-        },
-        {
-            "id": 37,
-            "name": "Western"
-        }
-    ]
-}
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
 def main():
-    count = 0
-    count2 = 0
+    arregloMovies = []
+    arregloMoviesFilter = []
+    print ("Cargando datos movieTitles")
     with open("../../../netflixData/movieTitles.csv", "rb") as myFileRead:
-        with open("resultSearchFilter.csv", "rb") as myFileRead2:
-            index2 = 0
-            for line in myFileRead:
-                line = line.decode(enc)
-                line = line.encode("utf8")
-                datos = (line.rstrip()).split(",")
+        for line in myFileRead:
+            line = line.decode(enc)
+            line = line.encode("utf8")
+            datos = (line.rstrip()).split(",")
+            arregloMovies.append(datos)
+
+    print ("Cargando datos resultSearchFilter")
+    with open("resultSearchFilter.csv", "r") as myFileRead2:
+        for line2 in myFileRead2:
+            line2 = line2.decode(enc)
+            line2 = line2.encode("utf8")
+            datos2 = (line2.rstrip()).split("=")
+            arregloMoviesFilter.append(datos2)
+
+    # [0] => RELEASE_DATE
+    # [1] => ORIGINAL_TITLE
+    # [2] => TITLE_MOVIE
+    # [3] => YEAR 
+    # [4] => ID_MOVIE
+    # [5] => ID
+    # [6] => GENRE_IDS
+    # [7] => POPULARITY
+    # [8] => TITLE_SEARCH
+    # [9] => ADULT
+    # [10] => ORIGINAL_LANGUAGE
+
+    print ("Filtrando y creando arregloMoviesContador")
+    arregloMoviesContador = []
+    for datos in arregloMovies:
+        contadorMovie = 0
+        valido = False
+        aux = []
+        for datos2 in arregloMoviesFilter:
+            if ( int(datos[0]) == int(datos2[4])):
+                contadorMovie += 1
+                if (str(datos2[5] != '')):
+                    valido = True
+                    aux.append(str(datos2[5]))
+        if (valido):
+            aux.append(int(datos[0]))
+            aux.append(int(contadorMovie))
+            arregloMoviesContador.append(aux)
+
+    # pprint (arregloMoviesContador)
+
+    print ("Generando archivo")
+    with open("archivoFiltrado.csv", "w") as myFileWrite:
+        indexValido = 0
+        for x in arregloMoviesContador:
+            if (int(x[2]) == 1):
+    #            pprint(x)
+                for datos3 in arregloMoviesFilter:
+                    # datos3 = (lineaPelicula.rstrip()).split("=")
+                    if (x[0] == datos3[5]):
+    #                    pprint (datos3)
+                        strResult = "{},{},{},{},{},{},{},{},{}\n".format(datos3[0], datos3[3], datos3[4], datos3[5], datos3[6], datos3[7], datos3[8], datos3[9], datos3[10])
+                        myFileWrite.write(strResult)
+                indexValido += 1
+
+    print ("largo arregloMoviesContador: " + str(len(arregloMoviesContador)))
+    print ("IndexValido: " + str(indexValido) )
+    print ("Programa finalizado")
+
+    ##print ("Total arregloMovies: " + str(len(arregloMovies)))
+    #print ("Total arregloMoviesFilter: " + str(len(arregloMoviesFilter)))
+    #print ("Multiplicacion de ambos: " + str(len(arregloMovies) * len(arregloMoviesFilter)))
+    #print ("contador total: " + str(contador))
+
+
+"""
+        with open("resultSearchFilter_2.csv", "w") as myFileWrite:
+            for datos in arregloMovies:
+                # [0] => ID_MOVIE
+                # [1] => YEAR_RELEASE
+                # [2] => TITLE
+                pprint (int(datos[0]))
+
+                contadorMovie = 0
                 for line2 in myFileRead2:
                     line2 = line2.decode(enc)
                     line2 = line2.encode("utf8")
+                    # [0] => RELEASE_DATE
+                    # [1] => ORIGINAL_TITLE
+                    # [2] => TITLE_MOVIE
+                    # [3] => YEAR 
+                    # [4] => ID_MOVIE
+                    # [5] => ID
+                    # [6] => GENRE_IDS
+                    # [7] => POPULARITY
+                    # [8] => TITLE_SEARCH
+                    # [9] => ADULT
+                    # [10] => ORIGINAL_LANGUAGE
+
                     datos2 = (line2.rstrip()).split("=")
-
-
-
-
-
+                    print (datos[0])
+                    print (datos2[4])
+                    pprint ((line2.rstrip()).split("=")[4])
+                    if ( datos[0] == datos2[4]):
+                        pprint (datos)
+                        contadorMovie += 1
+                    contador += 1
+                if (contadorMovie > 0):
+                    result = "{},{}\n".format(str(datos[0]), str(contadorMovie))
+                    myFileWrite.write(result)
                 
-                numeroDeRegistros = coll.find({"ID_MOVIE" : str(datos[0]) }).count()
-                index = 0
-                
-                for doc in searchs_filter.find({"ID_MOVIE" : str(datos[0]), "TITLE_MOVIE": str(datos[2]) }):
-                    if ( similar(datos[2], doc['ORIGINAL_TITLE']) > 0.9 or similar(datos[2], doc['TITLE_MOVIE']) > 0.9):
-                        print ("Titulo buscado: " + str(datos[2]))
-                        print ("Titulo Original: " + str(doc['ORIGINAL_TITLE']))
-                        print ("Titulo Pelicula: " + str(doc['TITLE_MOVIE']))
-                        print (str(doc['_id']))
-
-                        rowString = "{}={}={}={}={}={}={}={}={}={}={}\n".format(doc['RELEASE_DATE'], doc['ORIGINAL_TITLE'], doc['TITLE_MOVIE'], doc['YEAR'], doc['ID_MOVIE'], doc['ID'], doc['GENRE_IDS'], doc['POPULARITY'], doc['TITLE_SEARCH'], doc['ADULT'], doc['ORIGINAL_LANGUAGE'])
-                        print (rowString)
-                        myFileWrite.write(rowString)
-                        # print (datos['GENRE_IDS'])
-                        
-                        #for genero_id in doc['GENRE_IDS']:
-                        #    for genero in genres['genres']:
-                        #        if (genero_id == genero['id']):
-                        #            print (genero['name'])
-
-
-                        index2 += 1
-                    if (index == 1):
-                        #pprint(doc)
-                        count += 1
-                    index += 1
-
-    print ("Numero total de doc como unicos: " + str(count))
-    print ("Peliculas similares en un 90%: " + str(index2))
-
+            # arregloContadorMovie.append([datos[0], contadorMovie])
+    print ("total: " +str(contador))
+"""
 if __name__ == '__main__':
     main()
