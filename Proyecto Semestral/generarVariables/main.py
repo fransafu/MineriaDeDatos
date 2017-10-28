@@ -1,10 +1,17 @@
 #!/usr/bin/python2.7
-import sys
+
 from pprint import pprint
+from pymongo import MongoClient
+import json
 import ast
+import sys
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+client = MongoClient('mongodb://localhost:27017/')
+
+db = client['datamining']
 
 genres = {
     "genres": [
@@ -209,58 +216,60 @@ idiomas = {
 }
 
 def main():
-    print ("Inicia")
+    print ("Inicia programa")
 
-    nuevo_formato_arreglo = []
-    training_set_arreglo = []
-    validarPrimeraLinea = False
-    print ("Cargando final training set v1")
-    with open("../../../Respaldo_merge_data/final_training_set_v1.csv", "rb") as myFileRead:
-        with open("../../../Respaldo_merge_data/final_training_set_v1.csv", "rb") as myFileRead2:
-            ID_USUARIO = None
-            for line in myFileRead:
-                # [0] => DATE_RATING
-                # [1] => ID_USUARIO
-                # [2] => RATING
-                # [3] => RELEASE_DATE
-                # [4] => YEAR
-                # [5] => ID_MOVIE
-                # [6] => ID
-                # [7] => GENRE
-                # [8] => POPULARITY
-                # [9] => TITLE_SEARCH
-                # [10] => ORIGINAL_LANGUAGE
-                datos = (line.rstrip()).split(",")
-                if (validarPrimeraLinea == False):
-                    validarPrimeraLinea = True
-                elif (ID_USUARIO != datos[1]):
-                    ID_USUARIO = datos[1]
-                    print ("Nuevo usuario: {}".format(str(ID_USUARIO)))
-                    sumRating = 0.0
-                    count = 1
+    pipe = [
+        {
+            '$group' : { 
+                    '_id' : '$ID_USUARIO', 'count' : {'$sum' : 1}
+                }
+        }
+    ]
 
-                    for line2 in myFileRead2:
-                        datos2 = (line2.rstrip()).split(",")
-                        if (ID_USUARIO == datos2[1]):
-                            
-                            if (datos[2] == '1'):
-                                sumRating += 1
-                            elif (datos[2] == '2'):
-                                sumRating += 2
-                            elif (datos[2] == '3'):
-                                sumRating += 3
-                            elif (datos[2] == '4'):
-                                sumRating += 4
-                            elif (datos[2] == '5'):
-                                sumRating += 5
-                            count += 1
-                            
-                    print ("Puntuacion media: {}".format(sumRating/count))
-                    print ("suma puntuacion: {}".format(sumRating))
-                    print ("contador: {}".format(count))
+    queryMongo = db.training_sets_final_v3.aggregate( pipe )
+    pprint (queryMongo)
+    contador = 0
+    contador2 = 0
+    contador3 = 0
+    total = 0
+    suma = 0
+    for data in queryMongo:
+        #pprint (data['_id'])
+        #pprint (data['count'])
+        if (data['count'] > 1):
+            contador += 1
+        if (data['count'] > 5):
+            contador2 += 1
+        if (data['count'] > 10):
+            contador3 += 1
+        suma += data['count']
+        total += 1
 
+    print ("Total de usuario: {}".format(str(total)))
+    print ("Total de usuario con frecuencia mayor a 1: {}".format(str(contador)))
+    print ("Total de usuario con frecuencia mayor a 5: {}".format(str(contador2)))
+    print ("Total de usuario con frecuencia mayor a 10: {}".format(str(contador3)))
+    print ("Frecuencia promedio: {}".format(str(suma/total)))
 
-                
+    print ("Finaliza programa")
+    
+    """
+    contenido = []
+    with open(namefile1, "rb") as myFileRead:
+        for line in myFileRead:
+            line = line.decode(enc)
+            line = line.encode("utf8")
+            datos = (line.rstrip()).split(",")
+            dicAux = {
+                "ID_MOVIE": datos[0],
+                "USER_ID": datos[1],
+                "RATING": datos[2],
+                "DATE_RATING": datos[3]
+            }
+            contenido.append(dicAux)
+
+    record_id = mydb.training_sets.insert(contenido)
+"""
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,27 @@
+1) SELECT * FROM training_sets_final_v3
+
+db.training_sets_final_v3.find({})
+
+OUTPUT EXAMPLE:
+
+{ 
+"_id" : ObjectId("59f2a7f36c6195e2bb2beff6"), 
+"DATE_RATING" : "26/12/2005", 
+"ID_USUARIO" : 30878, 
+"RATING" : 4, 
+"RELEASE_DATE" : "14/12/2003", 
+"YEAR" : 2003, 
+"ID_MOVIE" : 1, 
+"ID" : 194423, 
+"GENRE" : 99, 
+"POPULARITY" : 1.115168, 
+"TITLE_SEARCH" : "Dinosaur Planet", 
+"ORIGINAL_LANGUAGE" : 1 
+}
+
+2) 
+
+db.training_sets_final_v3.aggregate(
+	{$group : { ID_USUARIO : '$user', count : {$sum : 1}}}
+).result
+
