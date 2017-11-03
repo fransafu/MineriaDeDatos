@@ -21,7 +21,28 @@ OUTPUT EXAMPLE:
 
 2) 
 
+db.data.aggregate(
+    { $group : {
+            _id : "$Name",
+            x: { $addToSet: "$x" },
+            y: { $addToSet: "$y" },
+            z: { $addToSet: "$z" },
+    }}
+)
+
 db.training_sets_final_v3.aggregate(
 	{$group : { ID_USUARIO : '$user', count : {$sum : 1}}}
 ).result
 
+db.training_sets_final_v3.aggregate(
+	{ $group : {
+			_id : "$ID_MOVIE",
+			GENRE: { $addToSet: "$GENRE" },
+			POPULARITY: { $addToSet: "$POPULARITY" },
+			TITLE_SEARCH: { $addToSet: "$TITLE_SEARCH" },
+			ORIGINAL_LANGUAGE: { $addToSet: "$ORIGINAL_LANGUAGE" }
+		} 
+	}
+)
+
+db.teams.update({}, {$set: {isGolden: false}}, {multi: true});
