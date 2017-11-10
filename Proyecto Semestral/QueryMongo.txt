@@ -45,4 +45,30 @@ db.training_sets_final_v3.aggregate(
 	}
 )
 
+db.sales.aggregate(
+   [
+     {
+       $group:
+         {
+           _id: "$ID_MOVIE",
+           avgRating: { $avg: "$RATING" }
+         }
+     }
+   ]
+)
+
+
 db.teams.update({}, {$set: {isGolden: false}}, {multi: true});
+
+
+
+db.movies_data.update(
+      {
+        'ID_MOVIE': 47
+      },
+      {
+        '$set': {
+          'ratingAvg': 0
+        }
+      }
+    )
