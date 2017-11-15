@@ -1,0 +1,55 @@
+variable
+
+=> comun
+
+_id
+YEAR
+ID_MOVIE
+ID
+POPULARITY
+
+=> GENRE_IDS
+
+['GENRE_IDS'][0]
+
+=> keywords
+
+['keywords']['keywords'][0]['id']
+['keywords']['keywords'][0]['name']
+
+=> crew
+
+['crew'][0]['id']
+['crew'][0]['name']
+['crew'][0]['gender']
+['crew'][0]['details']['popularity']
+
+Nota: Corregir indicador de popularidad (omitido)
+
+=> cast
+
+['cast'][0]['name']
+['cast'][0]['gender']
+['cast'][0]['id']
+['cast'][0]['details']['popularity']
+
+=> details
+
+['details']['runtime']
+['details']['vote_average']
+['details']['budget']
+['details']['original_title']
+['details']['popularity']
+['details']['release_date']
+['details']['original_title']
+['details']['production_companies'][0]['id']
+['details']['production_companies'][0]['name']
+['details']['original_language']
+['details']['vote_count']
+['details']['title']
+['details']['id']
+['details']['genres'][0]['id']
+['details']['genres'][0]['name']
+['details']['revenue']
+
+NOTA: Problemas con compania y genero
