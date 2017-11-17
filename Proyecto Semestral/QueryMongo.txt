@@ -72,3 +72,18 @@ db.movies_data.update(
         }
       }
     )
+
+db.training_sets.aggregate(
+  { $group : {
+      _id : "$USER_ID"
+    } 
+  }
+)
+
+db.training_sets.aggregate(
+  { $group : {
+      _id : "$USER_ID", 
+      count : {$sum : 1}
+    } 
+  }
+).result

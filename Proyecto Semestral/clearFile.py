@@ -7,8 +7,9 @@
 import csv
 
 # Const Var
-PATHFILETXT = './netflixData/combined_data_4.txt'
-PATHFILECSV = './netflixData/combined_data_4.csv'
+
+PATHFILETXT = '/home/fransafu/UTEM/Respaldo_merge_data/netflix-prize-data/combined_data_1.txt'
+PATHFILECSV = './combined_data_1.csv'
 ID_MOVIE = ''
 
 def transformFile(fileOpen, csvResult):

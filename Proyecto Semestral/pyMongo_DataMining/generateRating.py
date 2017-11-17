@@ -222,35 +222,76 @@ def inserDocMongo(data):
   return record_id
 
 
+"""
+0 => ACTOR_ID
+1 => ACTOR_NOMBRE
+2 => ACTOR_GENERO
+3 => DIRECTOR_NOMBRE
+4 => DIRECTOR_GENERO
+5 => DIRECTOR_ID
+6 => DIRECTOR_POPULARIDAD
+7 => TIEMPO
+8 => VOTO_PROMEDIO
+9 => PRESUPUESTO
+10 => TITULO_ORIGINAL
+11 => POPULARIDAD_DETALLE
+12 => FECHA_PUBLICACION
+13 => LENGUAJE_ORIGINAL
+14 => VOTO_CONTADOR
+15 => TITULO
+16 => ID_DETALLE
+17 => INGRESOS
+18 => GENERO
+19 => ANIO
+20 => ID_PELICULA
+21 => ID_EXTERNO
+22 => POPULARIDAD
+23 => RATING_PROMEDIO
+"""
+
+def readFileRating(file):
+  dicAux = []
+  with open(file, 'rb') as myFileRating:
+    for line in myFileRating:
+      data = line.split(",")
+      data[len(data) - 1] = data[len(data) - 1].rstrip() 
+      dicAux.append(data)
+
+  return dicAux
+
 def main():
-  allMovieData = db.movies_data.find({})
+  print ("Inicia programa")
   dicMovieData = []
-  dicMovie = []
-  for movieData in allMovieData:
-    dicMovieData.append(movieData)
+  with open('peliculas_info.csv', 'rb') as peliculasInfoFile:
+    contadorPeliculasInfo = 0
+    for movieData in peliculasInfoFile:
+      data = movieData.split("+")
+      data[23] = data[23].rstrip()
+      dicMovieData.append(data)
+      contadorPeliculasInfo += 1
 
-  
-  #for movie in allMovie:
-  #  dicMovie.append(movie)
+  print ("Contador peliculas info: " + str(contadorPeliculasInfo))
+  print ("Diccionarios de peliculas informacion listo")
 
-  count = 0
-  #for movie in dicMovie:
-  #  if (count >= 0):
-  for movieData in dicMovieData:
-    if (count >= 4000):
-      allMovie = db.training_sets.find({"ID_MOVIE" : int(movieData['ID_MOVIE'])})
-      for movie in allMovie:
-        try:
-          pprint(movie)
-          resulto_id = db.training_sets_by_movie_data.insert(movie)
-          print(resulto_id)
-        except:
-          pass
-    count += 1
-    #if (int(movie['ID_MOVIE']) == int(movieData['ID_MOVIE'])):
-      # pprint(movie)
-      
-   #   count += 1
+  print ("inicia merge")
+
+  dicMovieRating = readFileRating("../combined_data_3.csv")
+  for x in dicMovieRating:
+    for y in dicMovieData:
+      if (x[0] == y[20]):
+        # [0] => ID_MOVIE
+        # [1] => ID_USUARIO
+        # [2] => RATING
+        # [3] => DATE_RATING
+        y.append(x[1])
+        y.append(x[2])
+        y.append(x[3])
+        pprint(x)
+        pprint(y)
+  #with open("final_data_rating.csv", "w") as myFinalFile:
+  #  for movieRating in dicMovieRating:
+  #    pprint(movieRating)
+
 
   """
   print ("init avg")

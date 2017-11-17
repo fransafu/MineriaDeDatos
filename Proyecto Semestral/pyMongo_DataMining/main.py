@@ -443,8 +443,9 @@ def main():
   #print ("cast vacio: {}".format(str(contadorCastVacio)))
 
 def main():
-  with open("peliculas_info.csv", "w") as myFileWrite2:
-    myFileWrite2.write("ACTOR_ID+ACTOR_NOMBRE+ACTOR_GENERO+DIRECTOR_NOMBRE+DIRECTOR_GENERO+DIRECTOR_ID+DIRECTOR_POPULARIDAD+TIEMPO+VOTO_PROMEDIO+PRESUPUESTO+TITULO_ORIGINAL+POPULARIDAD_DETALLE+FECHA_PUBLICACION+LENGUAJE_ORIGINAL+VOTO_CONTADOR+TITULO+ID_DETALLE+INGRESOS+GENERO+ANIO+ID_PELICULA+ID_EXTERNO+POPULARIDAD+RATING_PROMEDIO\n")
+  with open("peliculas_info3.csv", "w") as myFileWrite2:
+    #myFileWrite2.write("ACTOR_ID+ACTOR_NOMBRE+ACTOR_GENERO+DIRECTOR_NOMBRE+DIRECTOR_GENERO+DIRECTOR_ID+DIRECTOR_POPULARIDAD+TIEMPO+VOTO_PROMEDIO+PRESUPUESTO+TITULO_ORIGINAL+POPULARIDAD_DETALLE+FECHA_PUBLICACION+LENGUAJE_ORIGINAL+VOTO_CONTADOR+TITULO+ID_DETALLE+INGRESOS+GENERO+ANIO+ID_PELICULA+ID_EXTERNO+POPULARIDAD+RATING_PROMEDIO\n")
+    myFileWrite2.write("ACTOR_ID#ACTOR_GENERO#DIRECTOR_GENERO#DIRECTOR_ID#DIRECTOR_POPULARIDAD#TIEMPO#VOTO_PROMEDIO#PRESUPUESTO#POPULARIDAD_DETALLE#FECHA_PUBLICACION#VOTO_CONTADOR#INGRESOS#GENERO#ANIO#ID_PELICULA#POPULARIDAD#RATING_PROMEDIO\n")
     allMoviesWithInfo = db.movies_data.find({})
     contadorCastIncompleto = 0
     contadorCrewIncompleto = 0
@@ -590,37 +591,26 @@ def main():
           #for findMovie in findMovieWithId:
           # pprint(findMovie)
           #pprint(json.dumps(data))
-          myFileWrite2.write("{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}+{}\n".format(int(movie['credits']['crew'][0]['id']),
-                                                                        str(movie['credits']['crew'][0]['name']),
+          myFileWrite2.write("{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}#{}\n".format(int(movie['credits']['crew'][0]['id']),
                                                                         int(movie['credits']['crew'][0]['gender']),
-                                                                        str(movie['credits']['cast'][0]['name']),
                                                                         int(movie['credits']['cast'][0]['gender']),
                                                                         int(movie['credits']['cast'][0]['id']),
-                                                                        float(movie['credits']['cast'][0]['details']['popularity']),
+                                                                        str(float(movie['credits']['cast'][0]['details']['popularity'])).replace(".", ","),
                                                                         int(movie['details']['runtime']),
-                                                                        float(movie['details']['vote_average']),
+                                                                        str(float(movie['details']['vote_average'])).replace(".", ","),
                                                                         int(movie['details']['budget']),
-                                                                        str(movie['details']['original_title']),
-                                                                        float(movie['details']['popularity']),
+                                                                        str(float(movie['details']['popularity'])).replace(".", ","),
                                                                         str(movie['details']['release_date']),
-                                                                        str(movie['details']['original_language']),
-                                                                        float(movie['details']['vote_count']),
-                                                                        str(movie['details']['title']),
-                                                                        int(movie['details']['id']),
-                                                                        float(movie['details']['revenue']),
+                                                                        str(float(movie['details']['vote_count'])).replace(".", ","),
+                                                                        str(float(movie['details']['revenue'])).replace(".", ","),
                                                                         int(movie['GENRE_IDS'][0]),
                                                                         int(movie['YEAR']),
                                                                         int(movie['ID_MOVIE']),
-                                                                        int(movie['ID']),
-                                                                        float(movie['POPULARITY']),
-                                                                        float(movie['ratingAvg'])))
-          #if (  ("+" in movie['credits']['crew'][0]['name']) or 
-          #   ("+" in movie['credits']['cast'][0]['name']) or 
-          #   ("+" in movie['details']['original_title']) or 
-          #   ("+" in movie['details']['title']) ):
-          # pprint(movie)
+                                                                        str(float(movie['POPULARITY'])).replace(".", ","),
+                                                                        str(float(movie['ratingAvg']))).replace(".", ","))
 
-        except:
+        except Exception as e:
+          pprint(e)
           contadorKeywordsIncompleto += 1
 
   print ("Contador status code details: {}".format(str(contadorStatusCodeDetails)))
